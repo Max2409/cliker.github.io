@@ -97,7 +97,7 @@
         </div>
         <button id="farm-button">Farm Coin</button>
         <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
-        <button id="shop-button">Shop</button>
+        <button id="shop-button">Магазин</button>
     </div>
     <script>
         const maxLevel = 999;
@@ -162,7 +162,7 @@
                 updateUI();
                 saveState();
             } else {
-                alert('No clicks available. Please wait for them to recover.');
+                alert('упс клики закончились, жди.');
             }
             lastClickTime = now;
         });
@@ -179,9 +179,9 @@
                 updateUI();
                 saveState();
             } else if (state.shopUses >= maxShopUses) {
-                alert('You have reached the maximum number of shop uses for today.');
+                alert('Выкупили на сегодня всё, приходите завтра.');
             } else {
-                alert('Not enough clicks available to purchase.');
+                alert('упс клики закончились, жди..');
             }
         });
 
