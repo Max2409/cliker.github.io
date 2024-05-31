@@ -13,14 +13,26 @@
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
         #tree {
             width: 200px;
             height: 200px;
             background-image: url('tree.png');
             background-size: cover;
+            position: relative;
         }
-        #farm-button {
+        #exp {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #farm-button, #shop-button {
             padding: 10px 20px;
             margin-top: 20px;
             font-size: 20px;
@@ -29,33 +41,105 @@
             border: none;
             cursor: pointer;
         }
+        #shop-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: orange;
+        }
+        #stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #clicks {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <div id="tree"></div>
-    <button id="farm-button">Farm $</button>
     <div id="stats">
-        <p>Balance: $<span id="balance">0</span></p>
-        <p>Level: <span id="level">1</span></p>
+        <p>Balance: DogeCoin $<span id="balance">0</span></p>
     </div>
+    <div id="tree">
+        <div id="exp">0 / 400 XP</div>
+    </div>
+    <button id="farm-button">Farm Coin</button>
+    <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
+    <button id="shop-button">Shop</button>
     <script>
         let balance = 0;
         let level = 1;
         let exp = 0;
-        let nextExp = 700;
+        let nextExp = 400;
+        let availableClicks = 200;
+        let clicksRecoveryRate = 15000; // 15 seconds
+        let maxLevel = 999;
+        let shopUses = 0;
+        const maxShopUses = 3;
 
-        document.getElementById('farm-button').addEventListener('click', () => {
-            balance++;
-            exp++;
-            document.getElementById('balance').innerText = balance;
+        const balanceEl = document.getElementById('balance');
+        const expEl = document.getElementById('exp');
+        const availableClicksEl = document.getElementById('available-clicks');
+        const farmButton = document.getElementById('farm-button');
+        const shopButton = document.getElementById('shop-button');
 
-            if (exp >= nextExp) {
+        function updateUI() {
+            balanceEl.innerText = balance;
+            expEl.innerText = `${exp} / ${nextExp} XP`;
+            availableClicksEl.innerText = availableClicks;
+        }
+
+        function levelUp() {
+            if (level < maxLevel) {
                 level++;
                 exp = 0;
-                nextExp += 500;
-                document.getElementById('level').innerText = level;
+                nextExp += 200;
+                availableClicks += 100;
+            }
+        }
+
+        farmButton.addEventListener('click', () => {
+            if (availableClicks > 0) {
+                balance++;
+                exp++;
+                availableClicks--;
+                if (exp >= nextExp) {
+                    levelUp();
+                }
+                updateUI();
+            } else {
+                alert('No clicks available. Please wait for them to recover.');
             }
         });
+
+        shopButton.addEventListener('click', () => {
+            if (shopUses < maxShopUses && availableClicks >= 50) {
+                availableClicks -= 50;
+                exp += 50;
+                balance += 50;
+                shopUses++;
+                if (exp >= nextExp) {
+                    levelUp();
+                }
+                updateUI();
+            } else if (shopUses >= maxShopUses) {
+                alert('You have reached the maximum number of shop uses for today.');
+            } else {
+                alert('Not enough clicks available to purchase.');
+            }
+        });
+
+        function recoverClicks() {
+            if (availableClicks < 200) {
+                availableClicks++;
+                updateUI();
+            }
+        }
+
+        setInterval(recoverClicks, clicksRecoveryRate);
+
+        updateUI();
     </script>
 </body>
 </html>
