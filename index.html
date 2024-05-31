@@ -68,15 +68,30 @@
     <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
     <button id="shop-button">Shop</button>
     <script>
-        let balance = 0;
-        let level = 1;
-        let exp = 0;
-        let nextExp = 400;
-        let availableClicks = 200;
-        let clicksRecoveryRate = 15000; // 15 seconds
-        let maxLevel = 999;
-        let shopUses = 0;
+        const maxLevel = 999;
         const maxShopUses = 3;
+        const clicksRecoveryRate = 15000; // 15 seconds
+
+        let state = {
+            balance: 0,
+            level: 1,
+            exp: 0,
+            nextExp: 400,
+            availableClicks: 200,
+            shopUses: 0,
+        };
+
+        function loadState() {
+            const savedState = localStorage.getItem('treeClickerState');
+            if (savedState) {
+                state = JSON.parse(savedState);
+            }
+            updateUI();
+        }
+
+        function saveState() {
+            localStorage.setItem('treeClickerState', JSON.stringify(state));
+        }
 
         const balanceEl = document.getElementById('balance');
         const expEl = document.getElementById('exp');
@@ -85,45 +100,47 @@
         const shopButton = document.getElementById('shop-button');
 
         function updateUI() {
-            balanceEl.innerText = balance;
-            expEl.innerText = `${exp} / ${nextExp} XP`;
-            availableClicksEl.innerText = availableClicks;
+            balanceEl.innerText = state.balance;
+            expEl.innerText = `${state.exp} / ${state.nextExp} XP`;
+            availableClicksEl.innerText = state.availableClicks;
         }
 
         function levelUp() {
-            if (level < maxLevel) {
-                level++;
-                exp = 0;
-                nextExp += 200;
-                availableClicks += 100;
+            if (state.level < maxLevel) {
+                state.level++;
+                state.exp = 0;
+                state.nextExp += 200;
+                state.availableClicks += 100;
             }
         }
 
         farmButton.addEventListener('click', () => {
-            if (availableClicks > 0) {
-                balance++;
-                exp++;
-                availableClicks--;
-                if (exp >= nextExp) {
+            if (state.availableClicks > 0) {
+                state.balance++;
+                state.exp++;
+                state.availableClicks--;
+                if (state.exp >= state.nextExp) {
                     levelUp();
                 }
                 updateUI();
+                saveState();
             } else {
                 alert('No clicks available. Please wait for them to recover.');
             }
         });
 
         shopButton.addEventListener('click', () => {
-            if (shopUses < maxShopUses && availableClicks >= 50) {
-                availableClicks -= 50;
-                exp += 50;
-                balance += 50;
-                shopUses++;
-                if (exp >= nextExp) {
+            if (state.shopUses < maxShopUses && state.availableClicks >= 50) {
+                state.availableClicks -= 50;
+                state.exp += 50;
+                state.balance += 50;
+                state.shopUses++;
+                if (state.exp >= state.nextExp) {
                     levelUp();
                 }
                 updateUI();
-            } else if (shopUses >= maxShopUses) {
+                saveState();
+            } else if (state.shopUses >= maxShopUses) {
                 alert('You have reached the maximum number of shop uses for today.');
             } else {
                 alert('Not enough clicks available to purchase.');
@@ -131,15 +148,16 @@
         });
 
         function recoverClicks() {
-            if (availableClicks < 200) {
-                availableClicks++;
+            if (state.availableClicks < 200) {
+                state.availableClicks++;
                 updateUI();
+                saveState();
             }
         }
 
         setInterval(recoverClicks, clicksRecoveryRate);
 
-        updateUI();
+        loadState();
     </script>
 </body>
 </html>
