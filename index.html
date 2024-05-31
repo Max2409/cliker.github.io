@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
     <title>Tree Clicker Game</title>
     <style>
         body {
@@ -14,10 +14,24 @@
             background-color: #f0f0f0;
             margin: 0;
             font-family: Arial, sans-serif;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        #game-container {
+            width: 300px; /* Adjust the width as needed */
+            height: 400px; /* Adjust the height as needed */
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         #tree {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             background-image: url('tree.png');
             background-size: cover;
             position: relative;
@@ -34,23 +48,18 @@
         }
         #farm-button, #shop-button {
             padding: 10px 20px;
-            margin-top: 20px;
-            font-size: 20px;
+            font-size: 16px;
             background-color: green;
             color: white;
             border: none;
             cursor: pointer;
         }
         #shop-button {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
             background-color: orange;
         }
         #stats {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+            width: 100%;
+            text-align: left;
         }
         #clicks {
             margin-top: 10px;
@@ -58,15 +67,17 @@
     </style>
 </head>
 <body>
-    <div id="stats">
-        <p>Balance: DogeCoin $<span id="balance">0</span></p>
+    <div id="game-container">
+        <div id="stats">
+            <p>Balance: DogeCoin $<span id="balance">0</span></p>
+        </div>
+        <div id="tree">
+            <div id="exp">0 / 400 XP</div>
+        </div>
+        <button id="farm-button">Farm Coin</button>
+        <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
+        <button id="shop-button">Shop</button>
     </div>
-    <div id="tree">
-        <div id="exp">0 / 400 XP</div>
-    </div>
-    <button id="farm-button">Farm Coin</button>
-    <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
-    <button id="shop-button">Shop</button>
     <script>
         const maxLevel = 999;
         const maxShopUses = 3;
