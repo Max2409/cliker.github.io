@@ -17,8 +17,10 @@
             overflow: hidden; /* Prevent scrolling */
         }
         #game-container {
-            width: 300px; /* Adjust the width as needed */
-            height: 400px; /* Adjust the height as needed */
+            width: 90%; /* Adjust width relative to screen size */
+            max-width: 400px; /* Set maximum width */
+            height: 90%; /* Adjust height relative to screen size */
+            max-height: 600px; /* Set maximum height */
             background-image: url('https://catherineasquithgallery.com/uploads/posts/2021-02/1613679455_22-p-fon-dlya-prezentatsii-polyana-24.png'); /* Path to your background image */
             background-size: cover;
             border: 1px solid #ccc;
@@ -31,10 +33,12 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         #tree {
-            width: 150px;
-            height: 150px;
+            width: 50%; /* Adjust width relative to container */
+            max-width: 200px; /* Set maximum width */
+            height: auto; /* Maintain aspect ratio */
             background-image: url('tree.png'); /* Path to your tree image */
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
             position: relative;
         }
         #exp {
@@ -64,6 +68,19 @@
         }
         #clicks {
             margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            #game-container {
+                width: 100%; /* Full width on small screens */
+                height: 100%; /* Full height on small screens */
+                border-radius: 0; /* Remove border radius on small screens */
+            }
+            #tree {
+                width: 70%; /* Adjust tree size for small screens */
+            }
+            #farm-button, #shop-button {
+                width: 90%; /* Adjust button width for small screens */
+            }
         }
     </style>
 </head>
@@ -126,7 +143,12 @@
             }
         }
 
+        let lastClickTime = 0;
+
         farmButton.addEventListener('click', () => {
+            const now = Date.now();
+            if (now - lastClickTime < 1000) return; // Prevents double-clicking
+
             if (state.availableClicks > 0) {
                 state.balance++;
                 state.exp++;
@@ -139,6 +161,7 @@
             } else {
                 alert('No clicks available. Please wait for them to recover.');
             }
+            lastClickTime = now;
         });
 
         shopButton.addEventListener('click', () => {
