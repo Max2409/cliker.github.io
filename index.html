@@ -3,60 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm Game</title>
-    <link rel="stylesheet" href="/static/styles.css">
-    <script src="/static/script.js" defer></script>
+    <title>Ваша игра</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-info">
-        <p>Уровень: <span id="level">1</span> (<span id="current-exp">0</span>/<span id="next-level-exp">100</span>)</p>
-    </div>
-    <div id="game">
-        <div id="fields">
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-            <div class="field green"></div>
-        </div>
-        <div id="controls">
-            <button id="process">Обработать</button>
-            <button id="plant">Посадить</button>
-            <button id="harvest">Собрать</button>
-            <button id="inventory-btn">Инвентарь</button>
-            <button id="shop-btn">Магазин</button>
-        </div>
-    </div>
-
-    <div id="inventory">
-        <h3>Инвентарь</h3>
-        <div class="inventory-item">
-            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
-            <span>Семена моркови: <span id="carrot-seeds">0</span></span>
-        </div>
-        <button id="close-inventory">Закрыть</button>
-    </div>
-
-    <div id="shop">
-        <h3>Магазин</h3>
-        <div class="shop-item">
-            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
-            <span>Семена моркови - 2 $</span>
-            <button class="buy-seeds" data-seed="carrot">Купить</button>
-        </div>
-        <button id="close-shop">Закрыть</button>
-    </div>
-
-    <div id="seed-selection">
-        <h3>Выберите семя</h3>
-        <div class="seed-item" id="carrot-seed-option" style="display: none;">
-            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
-            <span id="carrot-seeds-count"></span>
-        </div>
-        <button id="close-seed-selection">Закрыть</button>
-    </div>
+    <h1>Добро пожаловать в игру!</h1>
+    <p>Нажмите на кнопку, чтобы начать игру.</p>
+    <button id="playButton">Играть</button>
+    <script src="script.js"></script>
 </body>
 </html>
