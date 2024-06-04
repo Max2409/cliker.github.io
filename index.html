@@ -2,200 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
-    <title>Tree Clicker Game</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden; /* Prevent scrolling */
-        }
-        #game-container {
-            width: 90%; /* Adjust width relative to screen size */
-            max-width: 400px; /* Set maximum width */
-            height: 90%; /* Adjust height relative to screen size */
-            max-height: 600px; /* Set maximum height */
-            background-image: url('https://i.gifer.com/i0.gif'); /* Path to your background GIF */
-            background-size: cover;
-            background-position: center; /* Center the background image */
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* Ensure child elements are positioned relative to this container */
-        }
-        #tree {
-            width: 50%; /* Adjust width relative to container */
-            max-width: 200px; /* Set maximum width */
-            height: auto; /* Maintain aspect ratio */
-            background-image: url('https://i.gifer.com/i0.gif'); /* Path to your tree GIF */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: relative;
-        }
-        #exp {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #farm-button, #shop-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: green;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #shop-button {
-            background-color: orange;
-        }
-        #stats {
-            width: 100%;
-            text-align: left;
-        }
-        #clicks {
-            margin-top: 10px;
-        }
-        @media (max-width: 600px) {
-            #game-container {
-                width: 100%; /* Full width on small screens */
-                height: 100%; /* Full height on small screens */
-                border-radius: 0; /* Remove border radius on small screens */
-            }
-            #tree {
-                width: 70%; /* Adjust tree size for small screens */
-            }
-            #farm-button, #shop-button {
-                width: 90%; /* Adjust button width for small screens */
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Game</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/script.js" defer></script>
 </head>
 <body>
-    <div id="game-container">
-        <div id="stats">
-            <p>Balance: DogeCoin $<span id="balance">0</span></p>
-        </div>
-        <div id="tree">
-            <div id="exp">0 / 400 XP</div>
-        </div>
-        <button id="farm-button">Farm Coin</button>
-        <div id="clicks">Clicks available: <span id="available-clicks">200</span></div>
-        <button id="shop-button">Магазин</button>
+    <div id="game-info">
+        <p>Уровень: <span id="level">1</span> (<span id="current-exp">0</span>/<span id="next-level-exp">100</span>)</p>
     </div>
-    <script>
-        const maxLevel = 999;
-        const maxShopUses = 3;
-        const clicksRecoveryRate = 15000; // 15 seconds
+    <div id="game">
+        <div id="fields">
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+            <div class="field green"></div>
+        </div>
+        <div id="controls">
+            <button id="process">Обработать</button>
+            <button id="plant">Посадить</button>
+            <button id="harvest">Собрать</button>
+            <button id="inventory-btn">Инвентарь</button>
+            <button id="shop-btn">Магазин</button>
+        </div>
+    </div>
 
-        let state = {
-            balance: 0,
-            level: 1,
-            exp: 0,
-            nextExp: 400,
-            availableClicks: 200,
-            shopUses: 0,
-        };
+    <div id="inventory">
+        <h3>Инвентарь</h3>
+        <div class="inventory-item">
+            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
+            <span>Семена моркови: <span id="carrot-seeds">0</span></span>
+        </div>
+        <button id="close-inventory">Закрыть</button>
+    </div>
 
-        function loadState() {
-            const savedState = localStorage.getItem('treeClickerState');
-            if (savedState) {
-                state = JSON.parse(savedState);
-            }
-            updateUI();
-        }
+    <div id="shop">
+        <h3>Магазин</h3>
+        <div class="shop-item">
+            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
+            <span>Семена моркови - 2 $</span>
+            <button class="buy-seeds" data-seed="carrot">Купить</button>
+        </div>
+        <button id="close-shop">Закрыть</button>
+    </div>
 
-        function saveState() {
-            localStorage.setItem('treeClickerState', JSON.stringify(state));
-        }
-
-        const balanceEl = document.getElementById('balance');
-        const expEl = document.getElementById('exp');
-        const availableClicksEl = document.getElementById('available-clicks');
-        const farmButton = document.getElementById('farm-button');
-        const shopButton = document.getElementById('shop-button');
-
-        function updateUI() {
-            balanceEl.innerText = state.balance;
-            expEl.innerText = `${state.exp} / ${state.nextExp} XP`;
-            availableClicksEl.innerText = state.availableClicks;
-        }
-
-        function levelUp() {
-            if (state.level < maxLevel) {
-                state.level++;
-                state.exp = 0;
-                state.nextExp += 200;
-                state.availableClicks += 100;
-            }
-        }
-
-        let lastClickTime = 0;
-
-        farmButton.addEventListener('click', () => {
-            const now = Date.now();
-            if (now - lastClickTime < 1000) return; // Prevents double-clicking
-
-            if (state.availableClicks > 0) {
-                state.balance++;
-                state.exp++;
-                state.availableClicks--;
-                if (state.exp >= state.nextExp) {
-                    levelUp();
-                }
-                updateUI();
-                saveState();
-            } else {
-                alert('упс клики закончились, жди.');
-            }
-            lastClickTime = now;
-        });
-
-        shopButton.addEventListener('click', () => {
-            if (state.shopUses < maxShopUses && state.availableClicks >= 50) {
-                state.availableClicks -= 50;
-                state.exp += 50;
-                state.balance += 50;
-                state.shopUses++;
-                if (state.exp >= state.nextExp) {
-                    levelUp();
-                }
-                updateUI();
-                saveState();
-            } else if (state.shopUses >= maxShopUses) {
-                alert('Выкупили на сегодня всё, приходите завтра.');
-            } else {
-                alert('упс клики закончились, жди..');
-            }
-        });
-
-        function recoverClicks() {
-            if (state.availableClicks < 200) {
-                state.availableClicks++;
-                updateUI();
-                saveState();
-            }
-        }
-
-        setInterval(recoverClicks, clicksRecoveryRate);
-
-        loadState();
-    </script>
+    <div id="seed-selection">
+        <h3>Выберите семя</h3>
+        <div class="seed-item" id="carrot-seed-option" style="display: none;">
+            <img src="/static/images/carrot_seeds.png" alt="Carrot Seeds">
+            <span id="carrot-seeds-count"></span>
+        </div>
+        <button id="close-seed-selection">Закрыть</button>
+    </div>
 </body>
 </html>
