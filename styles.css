@@ -18,20 +18,11 @@ body {
 }
 
 #click-button {
-    background-color: blue;
-    color: white;
-    padding: 15px 30px;
-    font-size: 20px;
+    background: url('/static/images/button.png') no-repeat center center;
+    background-size: contain;
+    width: 150px; /* ширина кнопки */
+    height: 150px; /* высота кнопки */
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-}
-
-#click-button:hover {
-    background-color: darkblue;
-}
-
-#counter {
-    font-size: 24px;
-    margin-bottom: 20px;
+    outline: none;
 }
