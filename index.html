@@ -5,22 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm Game</title>
     <link rel="stylesheet" href="static/css/style.css">
-    <style>
-        body {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background-image: url('static/css/images/background.jpg'); /* Путь к вашему фоновому изображению */
-            background-size: cover;
-            background-position: center;
-        }
-    </style>
 </head>
 <body>
+    <div class="status-bar">
+        <div class="level">Уровень: <span id="level">1</span></div>
+        <div class="xp">Очки: <span id="xp">0</span> / <span id="xp-needed">100</span></div>
+    </div>
     <div class="farm">
         <div class="plot"></div>
         <div class="plot"></div>
@@ -31,6 +21,30 @@
         <div class="plot"></div>
         <div class="plot"></div>
         <div class="plot"></div>
+    </div>
+    <div class="controls">
+        <button id="process-button" onclick="toggleProcess()">Обработать</button>
+        <button onclick="plant()">Посадить</button>
+        <button onclick="harvest()">Собрать</button>
+        <button onclick="openShop()">Магазин</button>
+    </div>
+    <div class="controls">
+        <button onclick="field()">Поле</button>
+        <button onclick="stable()">Стойло</button>
+        <button onclick="garden()">Сад</button>
+        <button onclick="barn()">Амбар</button>
+        <button onclick="market()">Рынок</button>
+    </div>
+
+    <!-- Модальное окно магазина -->
+    <div id="shop-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeShop()">&times;</span>
+            <h2>Магазин</h2>
+            <p>Добро пожаловать в магазин! Здесь вы можете купить различные товары для вашей фермы.</p>
+            <!-- Добавьте здесь контент магазина -->
+            <button onclick="closeShop()">Закрыть</button>
+        </div>
     </div>
 
     <script src="static/js/script.js" data-tg-fullscreen="true"></script>
