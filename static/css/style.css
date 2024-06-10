@@ -1,7 +1,7 @@
 .farm {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 столбца */
-    grid-template-rows: repeat(4, 1fr); /* 4 строки */
+    grid-template-rows: repeat(3, 1fr); /* 3 строки */
     gap: 20px;
     margin-top: 20px;
     max-width: 600px; /* Добавляем ограничение на ширину фермы */
@@ -11,8 +11,10 @@
 }
 
 .plot {
-    width: 100%;
-    height: 150px;
+    width: 100px; /* Уменьшаем размер грядок */
+    height: 100px; /* Уменьшаем размер грядок */
     background-image: url('images/plots.png'); /* Путь к вашему изображению грядки */
+    background-size: cover; /* Убедитесь, что изображение масштабируется до размера грядки */
+    background-repeat: no-repeat; /* Убедитесь, что изображение не повторяется */
     cursor: pointer;
 }
