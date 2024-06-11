@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Farm Game</title>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
@@ -42,11 +42,18 @@
             <span class="close-button" onclick="closeShop()">&times;</span>
             <h2>Магазин</h2>
             <p>Добро пожаловать в магазин! Здесь вы можете купить различные товары для вашей фермы.</p>
-            <!-- Добавьте здесь контент магазина -->
+            <div class="shop-items">
+                <div class="shop-item">
+                    <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
+                    <span class="shop-item-name">Семена моркови</span>
+                    <button class="shop-item-button">Купить</button>
+                </div>
+                <!-- Добавьте здесь другие товары -->
+            </div>
             <button onclick="closeShop()">Закрыть</button>
         </div>
     </div>
 
-    <script src="static/js/script.js" data-tg-fullscreen="true"></script>
+    <script src="static/js/script.js"></script>
 </body>
 </html>
