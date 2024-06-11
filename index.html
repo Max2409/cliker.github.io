@@ -8,32 +8,35 @@
 </head>
 <body>
     <div class="status-bar">
-        <div class="level">Уровень: <span id="level">1</span></div>
-        <div class="xp">Очки: <span id="xp">0</span> / <span id="xp-needed">100</span></div>
+        <div class="level-info">
+            <div class="level">Уровень <span id="level">1</span></div>
+            <div class="xp-info">
+                <div class="xp">Опыт <span id="xp">0</span></div>
+                <div class="xp-needed">/ <span id="xp-needed">100</span></div>
+            </div>
+        </div>
+        <div class="coins-info">
+            <div class="coins">Монеты: <span id="coins">50</span></div>
+            <div class="currency-symbol">$</div>
+        </div>
     </div>
     <div class="farm">
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
-        <div class="plot"></div>
+        <div class="plot" data-id="1"></div>
+        <div class="plot" data-id="2"></div>
+        <div class="plot" data-id="3"></div>
+        <div class="plot" data-id="4"></div>
+        <div class="plot" data-id="5"></div>
+        <div class="plot" data-id="6"></div>
+        <div class="plot" data-id="7"></div>
+        <div class="plot" data-id="8"></div>
+        <div class="plot" data-id="9"></div>
     </div>
     <div class="controls">
         <button id="process-button" onclick="toggleProcess()">Обработать</button>
-        <button onclick="plant()">Посадить</button>
-        <button onclick="harvest()">Собрать</button>
+        <button id="plant-button" onclick="togglePlant()">Посадить</button>
+        <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
+        <button onclick="openWarehouse()">Склад</button>
         <button onclick="openShop()">Магазин</button>
-    </div>
-    <div class="controls">
-        <button onclick="field()">Поле</button>
-        <button onclick="stable()">Стойло</button>
-        <button onclick="garden()">Сад</button>
-        <button onclick="barn()">Амбар</button>
-        <button onclick="market()">Рынок</button>
     </div>
 
     <!-- Модальное окно магазина -->
@@ -41,12 +44,11 @@
         <div class="modal-content">
             <span class="close-button" onclick="closeShop()">&times;</span>
             <h2>Магазин</h2>
-            <p>Добро пожаловать в магазин! Здесь вы можете купить различные товары для вашей фермы.</p>
             <div class="shop-items">
                 <div class="shop-item">
                     <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
-                    <span class="shop-item-name">Семена моркови</span>
-                    <button class="shop-item-button">Купить</button>
+                    <span class="shop-item-price">10 $</span>
+                    <button class="shop-item-button" onclick="buyCarrotSeeds()">Купить</button>
                 </div>
                 <!-- Добавьте здесь другие товары -->
             </div>
@@ -54,6 +56,29 @@
         </div>
     </div>
 
+    <!-- Модальное окно склада -->
+    <div id="warehouse-modal" class="modal warehouse-modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeWarehouse()">&times;</span>
+            <h2>Склад</h2>
+            <div id="warehouse-items-container">
+                <!-- Здесь будут отображаться товары на складе -->
+            </div>
+            <button onclick="closeWarehouse()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно посадки -->
+    <div id="plant-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closePlantModal()">&times;</span>
+            <h2>Выберите семена</h2>
+            <div class="plant-items">
+                <!-- Здесь будут отображаться семена для посадки -->
+            </div>
+        </div>
+    </div>
+
     <script src="static/js/script.js"></script>
 </body>
-</html>
+</html
