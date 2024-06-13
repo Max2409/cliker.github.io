@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm Game</title>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
@@ -20,20 +20,16 @@
             <div class="currency-symbol">$</div>
         </div>
     </div>
-    <div class="farm-container">
-        <div class="farm">
-            <div class="plot" data-id="1"></div>
-            <div class="plot" data-id="2"></div>
-            <div class="plot" data-id="3"></div>
-            <div class="plot" data-id="4"></div>
-            <div class="plot" data-id="5"></div>
-            <div class="plot" data-id="6"></div>
-            <div class="plot" data-id="7"></div>
-            <div class="plot" data-id="8"></div>
-            <div class="plot" data-id="9"></div>
-        </div>
-    </div>
-    <div class="controls">
+    <div class="farm">
+        <div class="plot" data-id="1"></div>
+        <div class="plot" data-id="2"></div>
+        <div class="plot" data-id="3"></div>
+        <div class="plot" data-id="4"></div>
+        <div class="plot" data-id="5"></div>
+        <div class="plot" data-id="6"></div>
+        <div class="plot" data-id="7"></div>
+        <div class="plot" data-id="8"></div>
+        <div class="plot" data-id="9"></div>
         <button id="process-button" onclick="toggleProcess()">Обработать</button>
         <button id="plant-button" onclick="togglePlant()">Посадить</button>
         <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
@@ -48,37 +44,39 @@
             <h2>Магазин</h2>
             <div class="shop-items">
                 <div class="shop-item">
-                    <img src="images/carrot_icon.png" alt="Морковь">
-                    <div class="shop-item-price">Цена: 10 монет</div>
-                    <button class="shop-item-button" onclick="buyItem('carrot')">Купить</button>
+                    <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
+                    <span class="shop-item-price">10 $</span>
+                    <button class="shop-item-button" onclick="buyCarrotSeeds()">Купить</button>
                 </div>
-                <!-- Другие предметы магазина -->
+                <!-- Добавьте здесь другие товары -->
             </div>
+            <button onclick="closeShop()">Закрыть</button>
         </div>
     </div>
 
     <!-- Модальное окно склада -->
-    <div id="warehouse-modal" class="modal">
-        <div class="warehouse-modal-content">
+    <div id="warehouse-modal" class="modal warehouse-modal">
+        <div class="modal-content">
             <span class="close-button" onclick="closeWarehouse()">&times;</span>
             <h2>Склад</h2>
-            <div class="warehouse-items">
-                <!-- Элементы склада -->
+            <div id="warehouse-items-container">
+                <!-- Здесь будут отображаться товары на складе -->
             </div>
+            <button onclick="closeWarehouse()">Закрыть</button>
         </div>
     </div>
 
     <!-- Модальное окно посадки -->
     <div id="plant-modal" class="modal">
-        <div class="plant-modal-content">
-            <span class="close-button" onclick="closePlant()">&times;</span>
-            <h2>Выберите растение для посадки</h2>
+        <div class="modal-content">
+            <span class="close-button" onclick="closePlantModal()">&times;</span>
+            <h2>Выберите семена</h2>
             <div class="plant-items">
-                <!-- Элементы растений для посадки -->
+                <!-- Здесь будут отображаться семена для посадки -->
             </div>
         </div>
     </div>
 
-    <script src="static/js/scripts.js"></script>
+    <script src="static/js/script.js"></script>
 </body>
 </html>
