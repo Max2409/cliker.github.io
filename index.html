@@ -2,39 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Farm Game</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="status-bar">
-        <div class="level-info">
-            <div class="level">Уровень <span id="level">1</span></div>
-            <div class="xp-info">
-                <div class="xp">Опыт <span id="xp">0</span></div>
-                <div class="xp-needed">/ <span id="xp-needed">100</span></div>
+    <div class="container">
+        <div class="status-bar">
+            <div class="level-info">
+                <div class="level">Уровень <span id="level">1</span></div>
+                <div class="xp-info">
+                    <div class="xp">Опыт <span id="xp">0</span></div>
+                    <div class="xp-needed">/ <span id="xp-needed">100</span></div>
+                </div>
+            </div>
+            <div class="coins-info">
+                <div class="coins">Монеты: <span id="coins">50</span></div>
+                <div class="currency-symbol">$</div>
             </div>
         </div>
-        <div class="coins-info">
-            <div class="coins">Монеты: <span id="coins">50</span></div>
-            <div class="currency-symbol">$</div>
+
+        <div class="farm">
+            <div class="plots">
+                <div class="plot" data-id="1">
+                    <button onclick="toggleProcess()">1</button>
+                </div>
+                <div class="plot" data-id="2">
+                    <button onclick="togglePlant()">2</button>
+                </div>
+                <div class="plot" data-id="3">
+                    <button onclick="toggleHarvest()">3</button>
+                </div>
+                <div class="plot" data-id="4"></div>
+                <div class="plot" data-id="5"></div>
+                <div class="plot" data-id="6"></div>
+                <div class="plot" data-id="7"></div>
+                <div class="plot" data-id="8"></div>
+                <div class="plot" data-id="9"></div>
+            </div>
         </div>
-    </div>
-    <div class="farm">
-        <div class="plot" data-id="1"></div>
-        <div class="plot" data-id="2"></div>
-        <div class="plot" data-id="3"></div>
-        <div class="plot" data-id="4"></div>
-        <div class="plot" data-id="5"></div>
-        <div class="plot" data-id="6"></div>
-        <div class="plot" data-id="7"></div>
-        <div class="plot" data-id="8"></div>
-        <div class="plot" data-id="9"></div>
-        <button id="process-button" onclick="toggleProcess()">Обработать</button>
-        <button id="plant-button" onclick="togglePlant()">Посадить</button>
-        <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
-        <button onclick="openWarehouse()">Склад</button>
-        <button onclick="openShop()">Магазин</button>
+
+        <div class="controls">
+            <button onclick="openWarehouse()">Склад</button>
+            <button onclick="openShop()">Магазин</button>
+        </div>
     </div>
 
     <!-- Модальное окно магазина -->
@@ -77,6 +88,6 @@
         </div>
     </div>
 
-    <script src="static/js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
