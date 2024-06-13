@@ -5,7 +5,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background-image: url('images/background.jpg');
     background-size: cover;
     background-position: center;
@@ -30,68 +29,66 @@ body {
 
 .farm {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    max-width: 360px;
+    width: 100%;
 }
 
 .plot {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    padding-top: 100%; /* aspect ratio for square plots */
+    position: relative;
     background-image: url('images/plots.png');
     background-size: cover;
     background-repeat: no-repeat;
     cursor: pointer;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plot button {
+    position: absolute;
+    bottom: -25px;
+    right: 50%;
+    transform: translate(50%, 50%);
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
 }
 
 .plot.active {
     background-image: url('images/plots_active.png');
 }
 
-.plot img {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 80px;
-    height: 80px;
-}
-
-.plot .timer {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 3px 5px;
-    border-radius: 5px;
-}
-
 .controls {
     margin-top: 10px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    flex-wrap: wrap;
-    max-width: 360px; /* Устанавливаем максимальную ширину */
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
+.controls button {
+    width: 80px;
+    height: 80px;
+    font-size: 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
     transition: background-color 0.3s;
-    flex: 1 1 auto; /* Гибкость кнопок */
 }
 
-button:hover {
+.controls button:hover {
     background-color: #45a049;
 }
 
@@ -99,7 +96,7 @@ button.active {
     background-color: #FFD700;
 }
 
-/* Стили для модального окна магазина */
+/* Стили для модального окна магазина и других модальных окон оставляем без изменений */
 .modal {
     display: none;
     position: fixed;
@@ -202,81 +199,6 @@ button.active {
 }
 
 .currency-symbol {
+    font-size: 20px;
     margin-left: 5px;
-    font-size: 18px;
-}
-
-/* Стили для модального окна склада */
-.warehouse-modal {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    margin: 0 auto;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.warehouse-modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.warehouse-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.warehouse-item-image {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
-.warehouse-item-quantity {
-    font-size: 16px;
-    color: #555;
-}
-
-/* Стили для модального окна посадки */
-.plant-modal {
-    width: 80%;
-    max-width: 600px;
-    height: auto;
-}
-
-.plant-items {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.plant-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.plant-item img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
-.plant-item-button {
-    padding: 5px 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    transition: background-color 0.3s;
-}
-
-.plant-item-button:hover {
-    background-color: #45a049;
 }
