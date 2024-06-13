@@ -20,57 +20,61 @@
             <div class="currency-symbol">$</div>
         </div>
     </div>
-    <div class="farm-container">
-        <div class="farm">
-            <div class="plot" data-id="1"></div>
-            <div class="plot" data-id="2"></div>
-            <div class="plot" data-id="3"></div>
-            <div class="plot" data-id="4"></div>
-            <div class="plot" data-id="5"></div>
-            <div class="plot" data-id="6"></div>
-            <div class="plot" data-id="7"></div>
-            <div class="plot" data-id="8"></div>
-            <div class="plot" data-id="9"></div>
-        </div>
-        <div class="controls">
-            <div class="controls-row">
-                <button id="process-button" onclick="toggleProcess()">Обработать</button>
-                <button id="plant-button" onclick="togglePlant()">Посадить</button>
-            </div>
-            <div class="controls-row">
-                <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
-                <button id="warehouse-button" onclick="toggleWarehouse()">Склад</button>
-                <button id="shop-button" onclick="toggleShop()">Магазин</button>
-            </div>
-        </div>
+    <div class="farm">
+        <div class="plot" data-id="1"></div>
+        <div class="plot" data-id="2"></div>
+        <div class="plot" data-id="3"></div>
+        <div class="plot" data-id="4"></div>
+        <div class="plot" data-id="5"></div>
+        <div class="plot" data-id="6"></div>
+        <div class="plot" data-id="7"></div>
+        <div class="plot" data-id="8"></div>
+        <div class="plot" data-id="9"></div>
+    </div>
+    <div class="controls">
+        <button id="process-button" onclick="toggleProcess()">Обработать</button>
+        <button id="plant-button" onclick="togglePlant()">Посадить</button>
+        <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
+        <button onclick="openWarehouse()">Склад</button>
+        <button onclick="openShop()">Магазин</button>
     </div>
 
+    <!-- Модальное окно магазина -->
     <div id="shop-modal" class="modal">
-        <div class="modal-content shop-modal">
+        <div class="modal-content">
             <span class="close-button" onclick="closeShop()">&times;</span>
             <h2>Магазин</h2>
             <div class="shop-items">
-                <!-- Shop items will be dynamically added here -->
+                <div class="shop-item">
+                    <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
+                    <span class="shop-item-price">10 $</span>
+                    <button class="shop-item-button" onclick="buyCarrotSeeds()">Купить</button>
+                </div>
+                <!-- Добавьте здесь другие товары -->
             </div>
+            <button onclick="closeShop()">Закрыть</button>
         </div>
     </div>
 
-    <div id="warehouse-modal" class="modal">
-        <div class="modal-content warehouse-modal">
+    <!-- Модальное окно склада -->
+    <div id="warehouse-modal" class="modal warehouse-modal">
+        <div class="modal-content">
             <span class="close-button" onclick="closeWarehouse()">&times;</span>
             <h2>Склад</h2>
-            <div class="warehouse-items">
-                <!-- Warehouse items will be dynamically added here -->
+            <div id="warehouse-items-container">
+                <!-- Здесь будут отображаться товары на складе -->
             </div>
+            <button onclick="closeWarehouse()">Закрыть</button>
         </div>
     </div>
 
+    <!-- Модальное окно посадки -->
     <div id="plant-modal" class="modal">
-        <div class="modal-content plant-modal">
-            <span class="close-button" onclick="closePlant()">&times;</span>
-            <h2>Посадить</h2>
+        <div class="modal-content">
+            <span class="close-button" onclick="closePlantModal()">&times;</span>
+            <h2>Выберите семена</h2>
             <div class="plant-items">
-                <!-- Plant items will be dynamically added here -->
+                <!-- Здесь будут отображаться семена для посадки -->
             </div>
         </div>
     </div>
