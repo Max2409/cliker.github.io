@@ -33,16 +33,20 @@
             <div class="plot" data-id="9"></div>
         </div>
         <div class="controls">
-            <button id="process-button" onclick="toggleProcess()">Обработать</button>
-            <button id="plant-button" onclick="togglePlant()">Посадить</button>
-            <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
-            <button onclick="openWarehouse()">Склад</button>
-            <button onclick="openShop()">Магазин</button>
+            <div class="controls-row">
+                <button id="process-button" onclick="toggleProcess()">Обработать</button>
+                <button id="plant-button" onclick="togglePlant()">Посадить</button>
+            </div>
+            <div class="controls-row">
+                <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
+                <button id="warehouse-button" onclick="toggleWarehouse()">Склад</button>
+                <button id="shop-button" onclick="toggleShop()">Магазин</button>
+            </div>
         </div>
     </div>
 
     <div id="shop-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content shop-modal">
             <span class="close-button" onclick="closeShop()">&times;</span>
             <h2>Магазин</h2>
             <div class="shop-items">
