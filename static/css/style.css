@@ -1,52 +1,50 @@
 body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url('images/background.jpg');
+    justify-content: center;
+    background-image: url('images/background.jpg'); /* Replace this with the correct path */
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .status-bar {
     position: fixed;
     top: 10px;
-    left: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
-    width: 300px;
+    width: 90%;
+    max-width: 300px;
 }
 
 .level, .xp, .coins {
     font-size: 18px;
 }
 
-.farm-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 100px;
-}
-
 .farm {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 600px;
-    width: 100%;
+    gap: 10px;
+    margin: 100px 0 20px 0;
+    width: 90%;
+    max-width: 360px;
 }
 
 .plot {
     width: 100px;
     height: 100px;
-    background-image: url('images/plots.png');
+    background-image: url('images/plots.png'); /* Replace this with the correct path */
     background-size: cover;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -54,7 +52,7 @@ body {
 }
 
 .plot.active {
-    background-image: url('images/plots_active.png');
+    background-image: url('images/plots_active.png'); /* Replace this with the correct path */
 }
 
 .plot img {
@@ -76,12 +74,11 @@ body {
 }
 
 .controls {
-    margin-top: 10px;
     display: flex;
     justify-content: center;
     gap: 10px;
-    width: 100%;
-    max-width: 600px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 button {
@@ -103,7 +100,6 @@ button.active {
     background-color: #FFD700;
 }
 
-/* Стили для модального окна магазина */
 .modal {
     display: none;
     position: fixed;
@@ -123,7 +119,7 @@ button.active {
     border: 1px solid #888;
     width: 80%;
     max-width: 600px;
-    background-image: url('images/shop_background.jpg');
+    background-image: url('images/shop_background.jpg'); /* Replace this with the correct path */
     background-size: cover;
     position: relative;
 }
@@ -189,38 +185,86 @@ button.active {
     background-color: #45a049;
 }
 
-.warehouse-modal .modal-content {
-    width: 80%;
-    max-width: 600px;
-}
-
-.warehouse-items-container {
+.level-info {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+}
+
+.xp-info {
+    display: flex;
     align-items: center;
-    margin-top: 10px;
+}
+
+.coins-info {
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.warehouse-modal {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.warehouse-modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .warehouse-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    background-color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
 }
 
-.warehouse-item img {
+.warehouse-item-image {
     width: 50px;
     height: 50px;
+    margin-right: 10px;
 }
 
-.warehouse-item span {
-    margin: 0 10px;
+.warehouse-item-quantity {
+    font-size: 16px;
+    color: #555;
 }
 
-.warehouse-item button {
+.plant-modal {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+}
+
+.plant-items {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.plant-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.plant-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.plant-item-button {
     padding: 5px 10px;
     font-size: 14px;
     border: none;
@@ -231,6 +275,6 @@ button.active {
     transition: background-color 0.3s;
 }
 
-.warehouse-item button:hover {
+.plant-item-button:hover {
     background-color: #45a049;
 }
