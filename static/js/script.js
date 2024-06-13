@@ -9,6 +9,7 @@ let carrotSeeds = 0;
 const carrotSeedsPrice = 10;
 let plots = Array(9).fill(null);
 
+// Add event listeners for plot interaction
 document.querySelectorAll('.plot').forEach(plot => {
     plot.addEventListener('click', (event) => {
         if (isProcessing) {
@@ -20,6 +21,16 @@ document.querySelectorAll('.plot').forEach(plot => {
         }
     });
 });
+
+// Add event listeners for buttons
+document.getElementById('process-button').addEventListener('click', toggleProcess);
+document.getElementById('plant-button').addEventListener('click', togglePlant);
+document.getElementById('harvest-button').addEventListener('click', toggleHarvest);
+document.getElementById('shop-button').addEventListener('click', openShop);
+document.getElementById('warehouse-button').addEventListener('click', openWarehouse);
+document.getElementById('close-shop-button').addEventListener('click', closeShop);
+document.getElementById('close-warehouse-button').addEventListener('click', closeWarehouse);
+document.getElementById('buy-carrot-seeds').addEventListener('click', buyCarrotSeeds);
 
 function toggleProcess() {
     isProcessing = !isProcessing;
