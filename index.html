@@ -32,11 +32,15 @@
         <div class="plot" data-id="9"></div>
     </div>
     <div class="controls">
-        <button id="process-button" onclick="toggleProcess()">Обработать</button>
-        <button id="plant-button" onclick="togglePlant()">Посадить</button>
-        <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
-        <button onclick="openWarehouse()">Склад</button>
-        <button onclick="openShop()">Магазин</button>
+        <div class="row">
+            <button id="process-button" onclick="toggleProcess()">Обработать</button>
+            <button id="plant-button" onclick="togglePlant()">Посадить</button>
+            <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
+        </div>
+        <div class="row">
+            <button onclick="openWarehouse()">Склад</button>
+            <button onclick="openShop()">Магазин</button>
+        </div>
     </div>
 
     <!-- Модальное окно магазина -->
