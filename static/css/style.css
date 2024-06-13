@@ -1,19 +1,22 @@
 body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-image: url('images/background.jpg');
     background-size: cover;
     background-position: center;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .status-bar {
-    position: fixed;
-    top: 10px;
-    left: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 10px;
@@ -21,6 +24,7 @@ body {
     display: flex;
     justify-content: space-between;
     width: 300px;
+    margin-bottom: 20px;
 }
 
 .level, .xp, .coins {
@@ -28,6 +32,12 @@ body {
 }
 
 .farm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.plots {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
@@ -51,12 +61,12 @@ body {
 
 .plot button {
     position: absolute;
-    bottom: -25px;
-    right: 50%;
-    transform: translate(50%, 50%);
+    bottom: -15px; /* adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
     background-color: transparent;
     border: none;
-    font-size: 18px;
+    font-size: 14px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -69,19 +79,20 @@ body {
 }
 
 .controls {
-    margin-top: 10px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    margin-top: 20px;
+    max-width: 360px;
+    width: 100%;
 }
 
 .controls button {
-    width: 80px;
-    height: 80px;
-    font-size: 20px;
+    width: calc(100% / 5); /* evenly distribute buttons */
+    height: 50px;
+    font-size: 14px;
     border: none;
-    border-radius: 50%;
+    border-radius: 5px;
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
@@ -96,7 +107,7 @@ button.active {
     background-color: #FFD700;
 }
 
-/* Стили для модального окна магазина и других модальных окон оставляем без изменений */
+/* Стили для модальных окон оставляем без изменений */
 .modal {
     display: none;
     position: fixed;
@@ -190,15 +201,6 @@ button.active {
 
 .xp-info {
     display: flex;
-    align-items: center;
-}
-
-.coins-info {
-    display: flex;
-    align-items: center;
-}
-
-.currency-symbol {
-    font-size: 20px;
-    margin-left: 5px;
+    flex-direction: column;
+    align-items: flex-start;
 }
