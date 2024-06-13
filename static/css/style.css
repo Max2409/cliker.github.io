@@ -1,22 +1,19 @@
 body {
-    height: 100vh;
+    height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     background-image: url('images/background.jpg');
     background-size: cover;
     background-position: center;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .status-bar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 10px;
@@ -24,73 +21,72 @@ body {
     display: flex;
     justify-content: space-between;
     width: 300px;
-    margin-bottom: 20px;
 }
 
 .level, .xp, .coins {
     font-size: 18px;
 }
 
-.farm {
+.farm-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 100px;
 }
 
-.plots {
+.farm {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 20px;
-    max-width: 360px;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 600px;
     width: 100%;
 }
 
 .plot {
-    width: 100%;
-    padding-top: 100%; /* aspect ratio for square plots */
-    position: relative;
+    width: 100px;
+    height: 100px;
     background-image: url('images/plots.png');
     background-size: cover;
     background-repeat: no-repeat;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.plot button {
-    position: absolute;
-    bottom: -15px; /* adjust as needed */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: transparent;
-    border: none;
-    font-size: 14px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
+    position: relative;
 }
 
 .plot.active {
     background-image: url('images/plots_active.png');
 }
 
+.plot img {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 80px;
+    height: 80px;
+}
+
+.plot .timer {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 3px 5px;
+    border-radius: 5px;
+}
+
 .controls {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
-    max-width: 360px;
     width: 100%;
+    max-width: 600px;
 }
 
-.controls button {
-    width: calc(100% / 5); /* evenly distribute buttons */
-    height: 50px;
-    font-size: 14px;
+button {
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -99,7 +95,7 @@ body {
     transition: background-color 0.3s;
 }
 
-.controls button:hover {
+button:hover {
     background-color: #45a049;
 }
 
@@ -107,7 +103,7 @@ button.active {
     background-color: #FFD700;
 }
 
-/* Стили для модальных окон оставляем без изменений */
+/* Стили для модального окна магазина */
 .modal {
     display: none;
     position: fixed;
@@ -193,14 +189,48 @@ button.active {
     background-color: #45a049;
 }
 
-.level-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.warehouse-modal .modal-content {
+    width: 80%;
+    max-width: 600px;
 }
 
-.xp-info {
+.warehouse-items-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.warehouse-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.warehouse-item img {
+    width: 50px;
+    height: 50px;
+}
+
+.warehouse-item span {
+    margin: 0 10px;
+}
+
+.warehouse-item button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.warehouse-item button:hover {
+    background-color: #45a049;
 }
