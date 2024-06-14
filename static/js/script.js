@@ -245,12 +245,13 @@ function showNotification(message) {
 }
 // Функции для обработки нажатий на новые кнопки
 function openField() {
-    // Ваш код для открытия поля
+    window.location.href = 'index.html';
 }
 
 function openAnimals() {
-    // Ваш код для открытия животных
+    window.location.href = 'animals.html';
 }
+
 
 
 function openMarket() {
