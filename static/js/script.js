@@ -243,5 +243,26 @@ function showNotification(message) {
         }, 500);
     }, 2000);
 }
+// Функции для обработки нажатий на новые кнопки
+function openField() {
+    // Ваш код для открытия поля
+}
+
+function openAnimals() {
+    // Ваш код для открытия животных
+}
+
+
+function openMarket() {
+    // Ваш код для открытия рынка
+}
+
+function openTasks() {
+    // Ваш код для открытия заданий
+}
+
+function openRanking() {
+    // Ваш код для открытия рейтинга
+}
 
 updateStatus();
