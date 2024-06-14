@@ -35,11 +35,11 @@
         <div class="row">
             <button id="process-button" onclick="toggleProcess()">Обработать</button>
             <button id="plant-button" onclick="togglePlant()">Посадить</button>
-            <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
         </div>
         <div class="row">
+            <button id="harvest-button" onclick="toggleHarvest()">Собрать</button>
             <button onclick="openWarehouse()">Склад</button>
-            <button onclick="openShop()">Магазин</button>
+
         </div>
     </div>
 <div class="navigation-bar">
@@ -60,23 +60,35 @@
     </button>
 </div>
 
-
     <!-- Модальное окно магазина -->
-    <div id="shop-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeShop()">&times;</span>
-            <h2>Магазин</h2>
+    <!-- Модальное окно магазина -->
+<div id="shop-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeShop()">&times;</span>
+        <h2>Рынок (нажмите "купить" или "продать")</h2>
+        <div class="shop-tabs">
+            <button class="shop-tab" onclick="showShopTab('buy')">Купить</button>
+            <button class="shop-tab" onclick="showShopTab('sell')">Продать</button>
+        </div>
+        <div id="shop-buy-tab" class="shop-tab-content">
+            <!-- Содержимое вкладки "Купить" -->
             <div class="shop-items">
                 <div class="shop-item">
                     <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
                     <span class="shop-item-price">10 $</span>
                     <button class="shop-item-button" onclick="buyCarrotSeeds()">Купить</button>
                 </div>
-                <!-- Добавьте здесь другие товары -->
             </div>
-            <button onclick="closeShop()">Закрыть</button>
         </div>
+        <div id="shop-sell-tab" class="shop-tab-content" style="display: none;">
+            <!-- Содержимое вкладки "Продать" -->
+            <div id="warehouse-items-container-sell">
+                <!-- Здесь будут отображаться товары на складе -->
+            </div>
+        </div>
+        <button onclick="closeShop()">Закрыть</button>
     </div>
+</div>
 
     <!-- Модальное окно склада -->
     <div id="warehouse-modal" class="modal warehouse-modal">
