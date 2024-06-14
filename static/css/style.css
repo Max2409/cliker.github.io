@@ -313,7 +313,7 @@ body.animals {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain; /* Изменить background-size на contain */
-    min-height: 100vh; /* Добавить минимальную высоту */
+    min-height: 300vh; /* Добавить минимальную высоту */
     display: flex;
     justify-content: center;
     align-items: center;
