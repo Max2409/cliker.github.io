@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Farm Game</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="animals">
+
+    <div class="status-bar">
+        <div class="level-info">
+            <div class="level">Уровень <span id="level">1</span></div>
+            <div class="xp-info">
+                <div class="xp">Опыт <span id="xp">0</span></div>
+                <div class="xp-needed">/ <span id="xp-needed">100</span></div>
+            </div>
+        </div>
+        <div class="coins-info">
+            <div class="coins">Монеты: <span id="coins">50</span></div>
+            <div class="currency-symbol">$</div>
+        </div>
+    </div>
+
+<div class="navigation-bar">
+    <button class="nav-button" onclick="openField()">
+        <img src="static/css/images/field.png" alt="Поле">
+    </button>
+    <button class="nav-button" onclick="openAnimals()">
+        <img src="static/css/images/animals.png" alt="Животные">
+    </button>
+    <button class="nav-button" onclick="openMarket()">
+        <img src="static/css/images/market.png" alt="Рынок">
+    </button>
+    <button class="nav-button" onclick="openTasks()">
+        <img src="static/css/images/tasks.png" alt="Задания">
+    </button>
+    <button class="nav-button" onclick="openRanking()">
+        <img src="static/css/images/ranking.png" alt="Рейтинг">
+    </button>
+</div>
+
+    <!-- Модальное окно магазина -->
+    <!-- Модальное окно магазина -->
+<div id="shop-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeShop()">&times;</span>
+        <h2>Рынок (нажмите "купить" или "продать")</h2>
+        <div class="shop-tabs">
+            <button class="shop-tab" onclick="showShopTab('buy')">Купить</button>
+            <button class="shop-tab" onclick="showShopTab('sell')">Продать</button>
+        </div>
+        <div id="shop-buy-tab" class="shop-tab-content">
+            <!-- Содержимое вкладки "Купить" -->
+            <div class="shop-items">
+                <div class="shop-item">
+                    <img src="static/css/images/carrot_seeds.png" alt="Морковка" class="shop-item-image">
+                    <span class="shop-item-price">10 $</span>
+                    <button class="shop-item-button" onclick="buyCarrotSeeds()">Купить</button>
+                </div>
+            </div>
+        </div>
+        <div id="shop-sell-tab" class="shop-tab-content" style="display: none;">
+            <!-- Содержимое вкладки "Продать" -->
+            <div id="warehouse-items-container-sell">
+                <!-- Здесь будут отображаться товары на складе -->
+            </div>
+        </div>
+        <button onclick="closeShop()">Закрыть</button>
+    </div>
+</div>
+
+    <!-- Модальное окно склада -->
+    <div id="warehouse-modal" class="modal warehouse-modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeWarehouse()">&times;</span>
+            <h2>Склад</h2>
+            <div id="warehouse-items-container">
+                <!-- Здесь будут отображаться товары на складе -->
+            </div>
+            <button onclick="closeWarehouse()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно посадки -->
+    <div id="plant-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closePlantModal()">&times;</span>
+            <h2>Выберите семена</h2>
+            <div class="plant-items">
+                <!-- Здесь будут отображаться семена для посадки -->
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+</body>
+</html>
