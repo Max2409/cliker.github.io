@@ -254,7 +254,8 @@ function openAnimals() {
 
 
 function openMarket() {
-    // Ваш код для открытия рынка
+    openShop();
+
 }
 
 function openTasks() {
@@ -263,6 +264,62 @@ function openTasks() {
 
 function openRanking() {
     // Ваш код для открытия рейтинга
+}
+function showShopTab(tab) {
+    document.getElementById('shop-buy-tab').style.display = 'none';
+    document.getElementById('shop-sell-tab').style.display = 'none';
+
+    if (tab === 'buy') {
+        document.getElementById('shop-buy-tab').style.display = 'block';
+    } else if (tab === 'sell') {
+        document.getElementById('shop-sell-tab').style.display = 'block';
+        updateWarehouseSell();
+    }
+}
+
+function updateWarehouseSell() {
+    const warehouseItemsContainerSell = document.getElementById('warehouse-items-container-sell');
+    warehouseItemsContainerSell.innerHTML = '';
+
+    if (carrotSeeds === 0) {
+        const warehouseEmptyMessage = document.createElement('p');
+        warehouseEmptyMessage.textContent = 'Склад пуст';
+        warehouseItemsContainerSell.appendChild(warehouseEmptyMessage);
+    } else {
+        const warehouseItem = document.createElement('div');
+        warehouseItem.classList.add('warehouse-item');
+
+        const warehouseItemImage = document.createElement('img');
+        warehouseItemImage.src = 'static/css/images/carrot_seeds.png';
+        warehouseItemImage.alt = 'Морковка';
+        warehouseItemImage.classList.add('warehouse-item-image');
+        warehouseItem.appendChild(warehouseItemImage);
+
+        const warehouseItemQuantity = document.createElement('span');
+        warehouseItemQuantity.classList.add('warehouse-item-quantity');
+        warehouseItemQuantity.textContent = `Количество: ${carrotSeeds}`;
+        warehouseItem.appendChild(warehouseItemQuantity);
+
+        const warehouseItemSellButton = document.createElement('button');
+        warehouseItemSellButton.classList.add('warehouse-item-button');
+        warehouseItemSellButton.textContent = 'Продать';
+        warehouseItemSellButton.onclick = () => sellCarrotSeeds(1);
+        warehouseItem.appendChild(warehouseItemSellButton);
+
+        warehouseItemsContainerSell.appendChild(warehouseItem);
+    }
+}
+
+function sellCarrotSeeds(quantity) {
+    if (carrotSeeds >= quantity) {
+        carrotSeeds -= quantity;
+        coins += 10 * quantity;
+        updateStatus();
+        updateWarehouse();
+        updateWarehouseSell();
+    } else {
+        showNotification('Недостаточно моркови на складе');
+    }
 }
 
 updateStatus();
