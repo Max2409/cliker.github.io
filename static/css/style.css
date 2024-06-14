@@ -312,12 +312,12 @@ body.animals {
     background-image: url('images/animals_background.jpg');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain; /* Изменить background-size на contain */
-    min-height: 300vh; /* Добавить минимальную высоту */
+    background-size: cover; /* Изменить background-size на cover */
+    min-height: 100vh; /* Добавить минимальную высоту */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 300px; /* Добавить отступ сверху */
+    padding-top: 150px; /* Добавить отступ сверху */
 
 }
 /* Блок кнопок навигации */
