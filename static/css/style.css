@@ -275,5 +275,37 @@ body {
     max-width: 300px;
     margin-top: 10px;
 }
+/* Вкладки магазина */
+.shop-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.shop-tab {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.shop-tab:hover {
+    text-decoration: underline;
+}
+/* Кнопки "Купить" и "Продать" */
+.shop-tab {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.shop-tab:hover {
+    background-color: darkgreen;
+}
 
 
