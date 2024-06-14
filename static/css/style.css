@@ -308,4 +308,22 @@ body {
     background-color: darkgreen;
 }
 
+body.animals {
+    background-image: url('images/animals_background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 300px; /* Добавить отступ сверху */
+
+}
+/* Блок кнопок навигации */
+.navigation-bar {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 300px;
+}
+
 
