@@ -50,7 +50,7 @@ function updateButtonStates() {
 
 function processPlot(plot) {
     if (plot.classList.contains('active')) {
-        alert('Грядка обработана');
+        showNotification('Грядка уже обработана');
         return;
     }
 
@@ -60,7 +60,7 @@ function processPlot(plot) {
 
 function openPlantModal(plot) {
     if (!plot.classList.contains('active')) {
-        alert('Сначала обработайте грядку');
+        showNotification('Сначала обработайте грядку');
         return;
     }
 
@@ -110,7 +110,7 @@ function plantSeed(plot, seedType) {
         closePlantModal();
         startGrowing(plot, seedType);
     } else {
-        alert('Недостаточно семян для посадки');
+        showNotification('Недостаточно семян для посадки');
     }
 }
 
@@ -129,7 +129,7 @@ function startGrowing(plot, seedType) {
 
 function harvestPlot(plot) {
     if (!plot.classList.contains('harvestable')) {
-        alert('Нечего собирать');
+        showNotification('Нечего собирать');
         return;
     }
 
@@ -195,7 +195,7 @@ function buyCarrotSeeds() {
         updateStatus();
         updateWarehouse();
     } else {
-        alert('Недостаточно монет для покупки семян моркови');
+        showNotification('Недостаточно монет для покупки семян моркови');
     }
 }
 
@@ -224,6 +224,24 @@ function updateWarehouse() {
 
         warehouseItemsContainer.appendChild(warehouseItem);
     }
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 500);
+    }, 2000);
 }
 
 updateStatus();
