@@ -56,7 +56,6 @@ function processPlot(plot) {
 
     plot.classList.add('active');
     gainXP(15);
-    saveGameData();
 }
 
 function openPlantModal(plot) {
@@ -110,7 +109,6 @@ function plantSeed(plot, seedType) {
         plot.innerHTML = '<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">30</div>';
         closePlantModal();
         startGrowing(plot, seedType);
-        saveGameData();
     } else {
         showNotification('Недостаточно семян для посадки');
     }
@@ -125,7 +123,6 @@ function startGrowing(plot, seedType) {
             clearInterval(interval);
             plot.innerHTML = '<img src="static/css/images/carrot.png" alt="Морковка">';
             plot.classList.add('harvestable');
-            saveGameData();  // Сохранение данных после окончания роста
         }
     }, 1000);
 }
@@ -141,7 +138,6 @@ function harvestPlot(plot) {
     carrotSeeds += 2;
     updateWarehouse();
     gainXP(20);
-    saveGameData();
 }
 
 function openShop() {
@@ -170,72 +166,161 @@ function gainXP(amount) {
     if (xp >= xpNeeded) {
         levelUp();
     }
-    updateStats();
+    updateStatus();
 }
 
 function levelUp() {
-    level++;
     xp -= xpNeeded;
-    xpNeeded += 50;
+    level++;
+    xpNeeded += 100;
+    if (level > 999) {
+        level = 999;
+        xp = xpNeeded;
+    }
     coins += 10;
-    updateStats();
+    updateStatus();
 }
 
-function updateStats() {
+function updateStatus() {
     document.getElementById('level').textContent = level;
     document.getElementById('xp').textContent = xp;
-    document.getElementById('xpNeeded').textContent = xpNeeded;
+    document.getElementById('xp-needed').textContent = xpNeeded;
     document.getElementById('coins').textContent = coins;
 }
 
-function updateWarehouse() {
-    document.getElementById('carrotSeeds').textContent = carrotSeeds;
-}
-
-function showNotification(message) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.classList.add('active');
-    setTimeout(() => {
-        notification.textContent = '';
-        notification.classList.remove('active');
-    }, 3000);
-}
-
-async function saveGameData() {
-    try {
-        const response = await fetch('/save_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user_id: 123456789,  // Replace with actual user_id obtained from Telegram API
-                level: level,
-                xp: xp,
-                xp_needed: xpNeeded,
-                coins: coins,
-                carrot_seeds: carrotSeeds,
-                plots: plots
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to save game data');
-        }
-    } catch (error) {
-        console.error(error);
+function buyCarrotSeeds() {
+    if (coins >= carrotSeedsPrice) {
+        coins -= carrotSeedsPrice;
+        carrotSeeds += 1;
+        updateStatus();
+        updateWarehouse();
+    } else {
+        showNotification('Недостаточно монет для покупки семян моркови');
     }
 }
 
-document.getElementById('process-button').addEventListener('click', toggleProcess);
-document.getElementById('plant-button').addEventListener('click', togglePlant);
-document.getElementById('harvest-button').addEventListener('click', toggleHarvest);
-document.getElementById('shop-button').addEventListener('click', openShop);
-document.getElementById('shop-close').addEventListener('click', closeShop);
-document.getElementById('warehouse-button').addEventListener('click', openWarehouse);
-document.getElementById('warehouse-close').addEventListener('click', closeWarehouse);
-document.getElementById('close-plant-modal').addEventListener('click', closePlantModal);
-document.getElementById('notification').addEventListener('click', () => {
-    document.getElementById('notification').classList.remove('active');
-});
+function updateWarehouse() {
+    const warehouseItemsContainer = document.getElementById('warehouse-items-container');
+    warehouseItemsContainer.innerHTML = '';
+
+    if (carrotSeeds === 0) {
+        const warehouseEmptyMessage = document.createElement('p');
+        warehouseEmptyMessage.textContent = 'Склад пуст';
+        warehouseItemsContainer.appendChild(warehouseEmptyMessage);
+    } else {
+        const warehouseItem = document.createElement('div');
+        warehouseItem.classList.add('warehouse-item');
+
+        const warehouseItemImage = document.createElement('img');
+        warehouseItemImage.src = 'static/css/images/carrot_seeds.png';
+        warehouseItemImage.alt = 'Морковка';
+        warehouseItemImage.classList.add('warehouse-item-image');
+        warehouseItem.appendChild(warehouseItemImage);
+
+        const warehouseItemQuantity = document.createElement('span');
+        warehouseItemQuantity.classList.add('warehouse-item-quantity');
+        warehouseItemQuantity.textContent = carrotSeeds;
+        warehouseItem.appendChild(warehouseItemQuantity);
+
+        warehouseItemsContainer.appendChild(warehouseItem);
+    }
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 500);
+    }, 2000);
+}
+// Функции для обработки нажатий на новые кнопки
+function openField() {
+    window.location.href = 'index.html';
+}
+
+function openAnimals() {
+    window.location.href = 'animals.html';
+}
+
+
+
+function openMarket() {
+    openShop();
+
+}
+
+function openTasks() {
+    // Ваш код для открытия заданий
+}
+
+function openRanking() {
+    // Ваш код для открытия рейтинга
+}
+function showShopTab(tab) {
+    document.getElementById('shop-buy-tab').style.display = 'none';
+    document.getElementById('shop-sell-tab').style.display = 'none';
+
+    if (tab === 'buy') {
+        document.getElementById('shop-buy-tab').style.display = 'block';
+    } else if (tab === 'sell') {
+        document.getElementById('shop-sell-tab').style.display = 'block';
+        updateWarehouseSell();
+    }
+}
+
+function updateWarehouseSell() {
+    const warehouseItemsContainerSell = document.getElementById('warehouse-items-container-sell');
+    warehouseItemsContainerSell.innerHTML = '';
+
+    if (carrotSeeds === 0) {
+        const warehouseEmptyMessage = document.createElement('p');
+        warehouseEmptyMessage.textContent = 'Склад пуст';
+        warehouseItemsContainerSell.appendChild(warehouseEmptyMessage);
+    } else {
+        const warehouseItem = document.createElement('div');
+        warehouseItem.classList.add('warehouse-item');
+
+        const warehouseItemImage = document.createElement('img');
+        warehouseItemImage.src = 'static/css/images/carrot_seeds.png';
+        warehouseItemImage.alt = 'Морковка';
+        warehouseItemImage.classList.add('warehouse-item-image');
+        warehouseItem.appendChild(warehouseItemImage);
+
+        const warehouseItemQuantity = document.createElement('span');
+        warehouseItemQuantity.classList.add('warehouse-item-quantity');
+        warehouseItemQuantity.textContent = `Количество: ${carrotSeeds}`;
+        warehouseItem.appendChild(warehouseItemQuantity);
+
+        const warehouseItemSellButton = document.createElement('button');
+        warehouseItemSellButton.classList.add('warehouse-item-button');
+        warehouseItemSellButton.textContent = 'Продать';
+        warehouseItemSellButton.onclick = () => sellCarrotSeeds(1);
+        warehouseItem.appendChild(warehouseItemSellButton);
+
+        warehouseItemsContainerSell.appendChild(warehouseItem);
+    }
+}
+
+function sellCarrotSeeds(quantity) {
+    if (carrotSeeds >= quantity) {
+        carrotSeeds -= quantity;
+        coins += 10 * quantity;
+        updateStatus();
+        updateWarehouse();
+        updateWarehouseSell();
+    } else {
+        showNotification('Недостаточно моркови на складе');
+    }
+}
+
+updateStatus();
