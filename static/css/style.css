@@ -307,7 +307,6 @@ body {
 .shop-tab:hover {
     background-color: darkgreen;
 }
-
 body.animals {
     background-image: url('images/animals_background.jpg');
     background-position: center;
@@ -330,5 +329,3 @@ body.animals {
     width: 100%;
     max-width: 300px;
 }
-
-
