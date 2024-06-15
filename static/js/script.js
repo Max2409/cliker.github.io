@@ -56,6 +56,7 @@ function processPlot(plot) {
 
     plot.classList.add('active');
     gainXP(15);
+    saveGameData();
 }
 
 function openPlantModal(plot) {
@@ -109,6 +110,7 @@ function plantSeed(plot, seedType) {
         plot.innerHTML = '<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">30</div>';
         closePlantModal();
         startGrowing(plot, seedType);
+        saveGameData();
     } else {
         showNotification('Недостаточно семян для посадки');
     }
@@ -138,6 +140,7 @@ function harvestPlot(plot) {
     carrotSeeds += 2;
     updateWarehouse();
     gainXP(20);
+    saveGameData();
 }
 
 function openShop() {
@@ -167,6 +170,7 @@ function gainXP(amount) {
         levelUp();
     }
     updateStatus();
+    saveGameData();
 }
 
 function levelUp() {
@@ -179,6 +183,7 @@ function levelUp() {
     }
     coins += 10;
     updateStatus();
+    saveGameData();
 }
 
 function updateStatus() {
@@ -194,6 +199,7 @@ function buyCarrotSeeds() {
         carrotSeeds += 1;
         updateStatus();
         updateWarehouse();
+        saveGameData();
     } else {
         showNotification('Недостаточно монет для покупки семян моркови');
     }
@@ -243,6 +249,32 @@ function showNotification(message) {
         }, 500);
     }, 2000);
 }
+
+async function saveGameData() {
+    try {
+        const response = await fetch('/save_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                level: level,
+                xp: xp,
+                xp_needed: xpNeeded,
+                coins: coins,
+                carrot_seeds: carrotSeeds,
+                plots: plots
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save game data');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 // Функции для обработки нажатий на новые кнопки
 function openField() {
     window.location.href = 'index.html';
@@ -252,11 +284,8 @@ function openAnimals() {
     window.location.href = 'animals.html';
 }
 
-
-
 function openMarket() {
     openShop();
-
 }
 
 function openTasks() {
@@ -266,18 +295,8 @@ function openTasks() {
 function openRanking() {
     // Ваш код для открытия рейтинга
 }
-function showShopTab(tab) {
-    document.getElementById('shop-buy-tab').style.display = 'none';
-    document.getElementById('shop-sell-tab').style.display = 'none';
 
-    if (tab === 'buy') {
-        document.getElementById('shop-buy-tab').style.display = 'block';
-    } else if (tab === 'sell') {
-        document.getElementById('shop-sell-tab').style.display = 'block';
-        updateWarehouseSell();
-    }
-}
-
+// Функция для обновления данных на складе при продаже
 function updateWarehouseSell() {
     const warehouseItemsContainerSell = document.getElementById('warehouse-items-container-sell');
     warehouseItemsContainerSell.innerHTML = '';
@@ -311,6 +330,7 @@ function updateWarehouseSell() {
     }
 }
 
+// Функция для продажи семян моркови
 function sellCarrotSeeds(quantity) {
     if (carrotSeeds >= quantity) {
         carrotSeeds -= quantity;
@@ -318,6 +338,7 @@ function sellCarrotSeeds(quantity) {
         updateStatus();
         updateWarehouse();
         updateWarehouseSell();
+        saveGameData();
     } else {
         showNotification('Недостаточно моркови на складе');
     }
