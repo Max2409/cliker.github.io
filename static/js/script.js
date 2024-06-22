@@ -152,6 +152,7 @@ function startGrowing(plot, index) {
     }
 }
 
+
 function harvestPlot(plot, index) {
     if (!plot.classList.contains('harvestable')) {
         showNotification('Нечего собирать');
@@ -308,6 +309,7 @@ function loadProgress() {
         })); // Добавляем свойство interval для всех грядок
         updatePlots();
         startAutoSave(); // Запускаем автосохранение
+        startAutoGrowing(); // Запускаем автогрошение
     }
 }
 
@@ -334,6 +336,14 @@ function updatePlots() {
     });
 }
 
+function startAutoGrowing() {
+    plots.forEach((plot, index) => {
+        if (plot && plot.status === 'planted') {
+            const plotElement = document.querySelector(`.plot:nth-child(${index + 1})`);
+            startGrowing(plotElement, index);
+        }
+    });
+}
 
 // Функции для обработки нажатий на новые кнопки
 function openField() {
