@@ -307,10 +307,9 @@ function loadProgress() {
             interval: null
         })); // Добавляем свойство interval для всех грядок
         updatePlots();
+        startAutoSave(); // Запускаем автосохранение
     }
 }
-
-
 
 function updatePlots() {
     console.log('Updating plots...');
@@ -419,5 +418,12 @@ function sellCarrotSeeds(quantity) {
         showNotification('Недостаточно моркови на складе');
     }
 }
+
+function startAutoSave() {
+    setInterval(() => {
+        saveProgress();
+    }, 1000); // 1000 миллисекунд = 1 секунда
+}
+
 
 updateStatus();
