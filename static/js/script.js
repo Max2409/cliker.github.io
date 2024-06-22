@@ -35,7 +35,7 @@ function toggleProcess() {
     isPlanting = false;
     isHarvesting = false;
     updateButtonStates();
-    saveProgress();  // Save progress when toggling process
+    saveProgress();
 }
 
 function togglePlant() {
@@ -43,7 +43,7 @@ function togglePlant() {
     isProcessing = false;
     isHarvesting = false;
     updateButtonStates();
-    saveProgress();  // Save progress when toggling plant
+    saveProgress();
 }
 
 function toggleHarvest() {
@@ -51,28 +51,31 @@ function toggleHarvest() {
     isProcessing = false;
     isPlanting = false;
     updateButtonStates();
-    saveProgress();  // Save progress when toggling harvest
+    saveProgress();
 }
 
 function updateButtonStates() {
+    console.log('Updating button states:', { isProcessing, isPlanting, isHarvesting });
     document.getElementById('process-button').classList.toggle('active', isProcessing);
     document.getElementById('plant-button').classList.toggle('active', isPlanting);
     document.getElementById('harvest-button').classList.toggle('active', isHarvesting);
 }
 
 function processPlot(plot, index) {
+    console.log(`Processing plot ${index}`);
     if (plot.classList.contains('active')) {
         showNotification('Грядка уже обработана');
         return;
     }
 
-    plot.classList.add('active');
+     plot.classList.add('active');
     plots[index] = { status: 'processed' };
     gainXP(15);
-    saveProgress();  // Save progress after processing plot
+    saveProgress();
 }
 
 function openPlantModal(plot, index) {
+    console.log(`Opening plant modal for plot ${index}`);
     if (!plot.classList.contains('active')) {
         showNotification('Сначала обработайте грядку');
         return;
@@ -132,18 +135,21 @@ function plantSeed(plot, seedType, index) {
 
 function startGrowing(plot, index) {
     let timer = plots[index].timeLeft;
-    const interval = setInterval(() => {
-        timer--;
-        plot.querySelector('.timer').textContent = timer;
-        plots[index].timeLeft = timer;
-        if (timer <= 0) {
-            clearInterval(interval);
-            plot.innerHTML = '<img src="static/css/images/carrot.png" alt="Морковка">';
-            plot.classList.add('harvestable');
-            plots[index] = { status: 'harvestable', type: 'carrot' };
-            saveProgress();  // Save progress after growing completed
-        }
-    }, 1000);
+    if (!plots[index].interval) {
+        console.log(`Starting growing process for plot ${index} with timer ${timer}`);
+        plots[index].interval = setInterval(() => {
+            timer--;
+            plot.querySelector('.timer').textContent = timer;
+            plots[index].timeLeft = timer;
+            if (timer <= 0) {
+                clearInterval(plots[index].interval);
+                plot.innerHTML = '<img src="static/css/images/carrot.png" alt="Морковка">';
+                plot.classList.add('harvestable');
+                plots[index] = { status: 'harvestable', type: 'carrot' };
+                saveProgress();
+            }
+        }, 1000);
+    }
 }
 
 function harvestPlot(plot, index) {
@@ -296,18 +302,29 @@ function loadProgress() {
         xpNeeded = savedProgress.xpNeeded;
         coins = savedProgress.coins;
         carrotSeeds = savedProgress.carrotSeeds;
-        plots = savedProgress.plots;
-        updatePlots(); // Обновить состояние грядок на странице
+        plots = savedProgress.plots.map((plot) => ({
+            ...plot,
+            interval: null
+        })); // Добавляем свойство interval для всех грядок
+        updatePlots();
     }
 }
 
+
+
 function updatePlots() {
+    console.log('Updating plots...');
     document.querySelectorAll('.plot').forEach((plot, index) => {
         const plotData = plots[index];
+        plot.classList.remove('active', 'harvestable');
+        plot.innerHTML = '';
+
         if (plotData) {
+            console.log(`Plot ${index} data:`, plotData);
             if (plotData.status === 'processed') {
                 plot.classList.add('active');
             } else if (plotData.status === 'planted') {
+                plot.classList.add('active'); // Ensure the plot stays active if it's planted
                 plot.innerHTML = `<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">${plotData.timeLeft}</div>`;
                 startGrowing(plot, index);
             } else if (plotData.status === 'harvestable') {
@@ -316,19 +333,8 @@ function updatePlots() {
             }
         }
     });
- 
-// Обновить отображение грядок на странице в соответствии с текущим состоянием
-  document.querySelectorAll('.plot').forEach((plot, index) => {
-    if (plots[index] && plots[index].status === 'processed') {
-      plot.classList.add('active');
-    } else {
-      plot.classList.remove('active');
-    }
-    if (plots[index] && plots[index].status === 'planted') {
-      plot.innerHTML = `<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">${plots[index].timeLeft}</div>`;
-    }
-  });
 }
+
 
 // Функции для обработки нажатий на новые кнопки
 function openField() {
