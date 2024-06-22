@@ -297,6 +297,7 @@ function loadProgress() {
         coins = savedProgress.coins;
         carrotSeeds = savedProgress.carrotSeeds;
         plots = savedProgress.plots;
+        updatePlots(); // Обновить состояние грядок на странице
     }
 }
 
@@ -315,6 +316,18 @@ function updatePlots() {
             }
         }
     });
+ 
+// Обновить отображение грядок на странице в соответствии с текущим состоянием
+  document.querySelectorAll('.plot').forEach((plot, index) => {
+    if (plots[index] && plots[index].status === 'processed') {
+      plot.classList.add('active');
+    } else {
+      plot.classList.remove('active');
+    }
+    if (plots[index] && plots[index].status === 'planted') {
+      plot.innerHTML = `<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">${plots[index].timeLeft}</div>`;
+    }
+  });
 }
 
 // Функции для обработки нажатий на новые кнопки
