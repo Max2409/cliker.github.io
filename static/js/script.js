@@ -9,6 +9,25 @@ let carrotSeeds = 0;
 const carrotSeedsPrice = 10;
 let plots = Array(9).fill(null);
 
+// Load progress from localStorage
+window.onload = function() {
+    let savedProgress = localStorage.getItem('gameProgress');
+    if (savedProgress) {
+        let progress = JSON.parse(savedProgress);
+        isProcessing = progress.isProcessing;
+        isPlanting = progress.isPlanting;
+        isHarvesting = progress.isHarvesting;
+        level = progress.level;
+        xp = progress.xp;
+        xpNeeded = progress.xpNeeded;
+        coins = progress.coins;
+        carrotSeeds = progress.carrotSeeds;
+        plots = progress.plots;
+        updateStatus();
+        updateButtonStates();
+    }
+};
+
 document.querySelectorAll('.plot').forEach(plot => {
     plot.addEventListener('click', (event) => {
         if (isProcessing) {
@@ -18,6 +37,7 @@ document.querySelectorAll('.plot').forEach(plot => {
         } else if (isHarvesting) {
             harvestPlot(plot);
         }
+        saveProgress();  // Save progress after each interaction
     });
 });
 
@@ -26,6 +46,7 @@ function toggleProcess() {
     isPlanting = false;
     isHarvesting = false;
     updateButtonStates();
+    saveProgress();  // Save progress when toggling process
 }
 
 function togglePlant() {
@@ -33,6 +54,7 @@ function togglePlant() {
     isProcessing = false;
     isHarvesting = false;
     updateButtonStates();
+    saveProgress();  // Save progress when toggling plant
 }
 
 function toggleHarvest() {
@@ -40,6 +62,7 @@ function toggleHarvest() {
     isProcessing = false;
     isPlanting = false;
     updateButtonStates();
+    saveProgress();  // Save progress when toggling harvest
 }
 
 function updateButtonStates() {
@@ -56,6 +79,7 @@ function processPlot(plot) {
 
     plot.classList.add('active');
     gainXP(15);
+    saveProgress();  // Save progress after processing plot
 }
 
 function openPlantModal(plot) {
@@ -75,155 +99,85 @@ function openPlantModal(plot) {
         const plantItemImage = document.createElement('img');
         plantItemImage.src = 'static/css/images/carrot_seeds.png';
         plantItemImage.alt = 'Морковка';
+        plantItemImage.classList.add('plant-item-image');
         plantItem.appendChild(plantItemImage);
 
         const plantItemQuantity = document.createElement('span');
+        plantItemQuantity.classList.add('plant-item-quantity');
         plantItemQuantity.textContent = `Количество: ${carrotSeeds}`;
         plantItem.appendChild(plantItemQuantity);
 
-        const plantItemButton = document.createElement('button');
-        plantItemButton.textContent = 'Посадить';
-        plantItemButton.classList.add('plant-item-button');
-        plantItemButton.addEventListener('click', () => plantSeed(plot, 'carrot'));
-        plantItem.appendChild(plantItemButton);
+        plantItem.addEventListener('click', () => {
+            plantSeeds(plot, 'carrot');
+            modal.style.display = 'none';
+        });
 
         plantItemsContainer.appendChild(plantItem);
     } else {
         const noSeedsMessage = document.createElement('p');
-        noSeedsMessage.textContent = 'Нет семян для посадки';
+        noSeedsMessage.textContent = 'У вас нет семян';
         plantItemsContainer.appendChild(noSeedsMessage);
     }
 
     modal.style.display = 'block';
 }
 
-function closePlantModal() {
-    const modal = document.getElementById('plant-modal');
-    modal.style.display = 'none';
-}
-
-function plantSeed(plot, seedType) {
-    if (seedType === 'carrot' && carrotSeeds > 0) {
+function plantSeeds(plot, type) {
+    if (type === 'carrot' && carrotSeeds > 0) {
         carrotSeeds--;
-        updateWarehouse();
-        plot.innerHTML = '<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">30</div>';
-        closePlantModal();
-        startGrowing(plot, seedType);
-    } else {
-        showNotification('Недостаточно семян для посадки');
+        plot.dataset.type = 'carrot';
+        plot.classList.add('planted');
+        saveProgress();  // Save progress after planting seeds
     }
-}
-
-function startGrowing(plot, seedType) {
-    let timer = 30;
-    const interval = setInterval(() => {
-        timer--;
-        plot.querySelector('.timer').textContent = timer;
-        if (timer <= 0) {
-            clearInterval(interval);
-            plot.innerHTML = '<img src="static/css/images/carrot.png" alt="Морковка">';
-            plot.classList.add('harvestable');
-        }
-    }, 1000);
 }
 
 function harvestPlot(plot) {
-    if (!plot.classList.contains('harvestable')) {
-        showNotification('Нечего собирать');
+    if (!plot.classList.contains('planted')) {
+        showNotification('Нет растений для сбора');
         return;
     }
 
-    plot.innerHTML = '';
-    plot.classList.remove('harvestable', 'active');
-    carrotSeeds += 2;
-    updateWarehouse();
-    gainXP(20);
-}
-
-function openShop() {
-    const modal = document.getElementById('shop-modal');
-    modal.style.display = 'block';
-}
-
-function closeShop() {
-    const modal = document.getElementById('shop-modal');
-    modal.style.display = 'none';
-}
-
-function openWarehouse() {
-    const modal = document.getElementById('warehouse-modal');
-    modal.style.display = 'block';
-    updateWarehouse();
-}
-
-function closeWarehouse() {
-    const modal = document.getElementById('warehouse-modal');
-    modal.style.display = 'none';
+    if (plot.dataset.type === 'carrot') {
+        carrotSeeds++;
+        plot.classList.remove('planted');
+        plot.classList.remove('active');
+        delete plot.dataset.type;
+        gainXP(10);
+        saveProgress();  // Save progress after harvesting
+    }
 }
 
 function gainXP(amount) {
     xp += amount;
     if (xp >= xpNeeded) {
-        levelUp();
+        level++;
+        xp = xp - xpNeeded;
+        xpNeeded = Math.floor(xpNeeded * 1.5);
     }
     updateStatus();
-}
-
-function levelUp() {
-    xp -= xpNeeded;
-    level++;
-    xpNeeded += 100;
-    if (level > 999) {
-        level = 999;
-        xp = xpNeeded;
-    }
-    coins += 10;
-    updateStatus();
+    saveProgress();  // Save progress after gaining XP
 }
 
 function updateStatus() {
-    document.getElementById('level').textContent = level;
-    document.getElementById('xp').textContent = xp;
-    document.getElementById('xp-needed').textContent = xpNeeded;
-    document.getElementById('coins').textContent = coins;
+    document.getElementById('level').textContent = `Уровень: ${level}`;
+    document.getElementById('xp').textContent = `Опыт: ${xp}/${xpNeeded}`;
+    document.getElementById('coins').textContent = `Монеты: ${coins}`;
+    document.getElementById('carrot-seeds').textContent = `Семена моркови: ${carrotSeeds}`;
 }
 
-function buyCarrotSeeds() {
-    if (coins >= carrotSeedsPrice) {
-        coins -= carrotSeedsPrice;
-        carrotSeeds += 1;
-        updateStatus();
-        updateWarehouse();
-    } else {
-        showNotification('Недостаточно монет для покупки семян моркови');
-    }
-}
-
-function updateWarehouse() {
-    const warehouseItemsContainer = document.getElementById('warehouse-items-container');
-    warehouseItemsContainer.innerHTML = '';
-
-    if (carrotSeeds === 0) {
-        const warehouseEmptyMessage = document.createElement('p');
-        warehouseEmptyMessage.textContent = 'Склад пуст';
-        warehouseItemsContainer.appendChild(warehouseEmptyMessage);
-    } else {
-        const warehouseItem = document.createElement('div');
-        warehouseItem.classList.add('warehouse-item');
-
-        const warehouseItemImage = document.createElement('img');
-        warehouseItemImage.src = 'static/css/images/carrot_seeds.png';
-        warehouseItemImage.alt = 'Морковка';
-        warehouseItemImage.classList.add('warehouse-item-image');
-        warehouseItem.appendChild(warehouseItemImage);
-
-        const warehouseItemQuantity = document.createElement('span');
-        warehouseItemQuantity.classList.add('warehouse-item-quantity');
-        warehouseItemQuantity.textContent = carrotSeeds;
-        warehouseItem.appendChild(warehouseItemQuantity);
-
-        warehouseItemsContainer.appendChild(warehouseItem);
-    }
+function saveProgress() {
+    let progress = {
+        isProcessing,
+        isPlanting,
+        isHarvesting,
+        level,
+        xp,
+        xpNeeded,
+        coins,
+        carrotSeeds,
+        plots
+    };
+    localStorage.setItem('gameProgress', JSON.stringify(progress));
 }
 
 function showNotification(message) {
@@ -231,42 +185,12 @@ function showNotification(message) {
     notification.classList.add('notification');
     notification.textContent = message;
     document.body.appendChild(notification);
-
     setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 500);
-    }, 2000);
-}
-// Функции для обработки нажатий на новые кнопки
-function openField() {
-    window.location.href = 'index.html';
+        document.body.removeChild(notification);
+    }, 3000);
 }
 
-function openAnimals() {
-    window.location.href = 'animals.html';
-}
-
-
-
-function openMarket() {
-    openShop();
-
-}
-
-function openTasks() {
-    // Ваш код для открытия заданий
-}
-
-function openRanking() {
-    // Ваш код для открытия рейтинга
-}
-function showShopTab(tab) {
+function updateShop(tab) {
     document.getElementById('shop-buy-tab').style.display = 'none';
     document.getElementById('shop-sell-tab').style.display = 'none';
 
@@ -318,6 +242,7 @@ function sellCarrotSeeds(quantity) {
         updateStatus();
         updateWarehouse();
         updateWarehouseSell();
+        saveProgress();  // Save progress after selling carrot seeds
     } else {
         showNotification('Недостаточно моркови на складе');
     }
