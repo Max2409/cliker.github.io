@@ -125,11 +125,12 @@ function plantSeed(plot, seedType, index) {
     if (seedType === 'carrot' && carrotSeeds > 0) {
         carrotSeeds--;
         updateWarehouse();
+        const plantTime = Date.now(); // Сохраняем текущее время в миллисекундах
         plot.innerHTML = '<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">30</div>';
         closePlantModal();
-        plots[index] = { status: 'planted', type: 'carrot', timeLeft: 30 };
-        startGrowing(plot, index);
+        plots[index] = { status: 'planted', type: 'carrot', plantTime, growTime: 30000 }; // Время роста в миллисекундах (30 секунд)
         saveProgress();  // Save progress after planting seeds
+        updatePlots();
     } else {
         showNotification('Недостаточно семян для посадки');
     }
