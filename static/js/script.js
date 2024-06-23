@@ -15,6 +15,8 @@ window.onload = function() {
     updateStatus();
     updateButtonStates();
     updatePlots();
+    startAutoSave();
+    startAutoGrowing();
 };
 
 document.querySelectorAll('.plot').forEach((plot, index) => {
@@ -314,19 +316,13 @@ function loadProgress() {
 }
 
 function updatePlots() {
-    console.log('Updating plots...');
-    document.querySelectorAll('.plot').forEach((plot, index) => {
+	console.log('Updating plots...');    
+	document.querySelectorAll('.plot').forEach((plot, index) => {
         const plotData = plots[index];
-        plot.classList.remove('active', 'harvestable');
-        plot.innerHTML = '';
-
         if (plotData) {
-            console.log(`Plot ${index} data:`, plotData);
             if (plotData.status === 'processed') {
                 plot.classList.add('active');
             } else if (plotData.status === 'planted') {
-                plot.classList.add('active'); // Ensure the plot stays active if it's planted
-                plot.innerHTML = `<img src="static/css/images/carrot_seeds.png" alt="Морковка"><div class="timer">${plotData.timeLeft}</div>`;
                 startGrowing(plot, index);
             } else if (plotData.status === 'harvestable') {
                 plot.innerHTML = '<img src="static/css/images/carrot.png" alt="Морковка">';
@@ -335,6 +331,7 @@ function updatePlots() {
         }
     });
 }
+
 
 function startAutoGrowing() {
     plots.forEach((plot, index) => {
